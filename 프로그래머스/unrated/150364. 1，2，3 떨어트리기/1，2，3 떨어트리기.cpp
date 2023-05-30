@@ -2,7 +2,7 @@
 using namespace std;
 typedef pair<int,int> pii;
 
-int dest(vector<vector<int>> &tree,vector<int> &road){//x번 노드가 현재 road[x]번째 자식노드를 가리키고 있다. 
+int drop(vector<vector<int>> &tree,vector<int> &road){//x번 노드가 현재 road[x]번째 자식노드를 가리키고 있다. 
     int node=1;// [게임의 규칙] 1.
     while(!tree[node].empty()){// [게임의 규칙] 2.
         int nx=tree[node][road[node]];
@@ -15,31 +15,35 @@ int dest(vector<vector<int>> &tree,vector<int> &road){//x번 노드가 현재 ro
 vector<int> solution(vector<vector<int>> edges, vector<int> target) {
     
     vector<vector<int>> tree(edges.size()+2);
-    for(auto i:edges) tree[i[0]].push_back(i[1]);
-    
+    for(auto e:edges) tree[e[0]].push_back(e[1]);
     //[게임의 규칙] 3. 과, 가장 번호가 작은 노드를 가리키는 간선을 초기 길로 설정한다는 조건을 위해 정렬한다.
     for(int i=0;i<tree.size();i++)
         sort(tree[i].begin(),tree[i].end());
     
-    vector<int> road(tree.size(),0),v,answer,vis(tree.size(),0);
-    vector<pii> range(tree.size(),{0,0});//노드 x에 숫자가 k번 떨어졌다면, k<=range[x]<=3k임을 의미한다.
+    vector<int> road(tree.size(),0),stacked(tree.size(),0),simulation;
+    vector<bool> enough(tree.size(),0);
     
-    set<int> se;
+    int cnt=0;
     for(int i=0;i<target.size();i++)
-        if(target[i]) se.insert(i);
-    while(!se.empty()){
-        //i+1번 노드의 정보가 target[i]에 있으므로, -1해줘야함.
-        int x=dest(tree,road)-1;v.push_back(x);vis[x]++;
-        range[x].first+=1,range[x].second+=3;
-        if(target[x]<range[x].first) return {-1};
-        if(range[x].first<=target[x]&&target[x]<=range[x].second){
-            if(se.find(x)!=se.end())se.erase(x);
-        }
+        if(!target[i])enough[i]=1,cnt++;
+    
+    while(cnt<target.size()){
+        //x번 노드의 정보가 target[x-1]에 있으므로, -1해줘야함.
+        int x=drop(tree,road)-1;
+        simulation.push_back(x),stacked[x]++;
+        
+        if(target[x]<stacked[x]) return {-1};//과하게 쌓인 경우.
+        if(target[x]<=stacked[x]*3)
+            if(!enough[x])cnt++,enough[x]=1;//충분히 쌓인 경우.
     }
-    for(auto i:v){
-        int x=max(1,target[i]-(vis[i]-1)*3);
-        target[i]-=x;vis[i]--;
-        answer.push_back(x);
+    
+    //숫자가 쌓인 노드 위치(simulation)를 보면서, 쌓인 숫자 개수(stacked)를 result로 변환하는 과정.
+    //simulation을 그냥 카운트만 센다음 다시 트리를 정렬해서 그 카운트 횟수만큼 다시 시뮬레이션을 돌려도 되지만, 시간복잡도가 두배가됨.
+    vector<int> result;
+    for(auto i:simulation){
+        int x=max(1,target[i]-(stacked[i]-1)*3);
+        target[i]-=x;stacked[i]--;
+        result.push_back(x);
     }
-    return answer;
+    return result;
 }
