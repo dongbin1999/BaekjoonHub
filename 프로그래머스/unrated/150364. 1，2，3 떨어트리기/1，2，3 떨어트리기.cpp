@@ -25,7 +25,7 @@ vector<int> solution(vector<vector<int>> edges, vector<int> target) {
     
     int cnt=0;
     for(int i=0;i<target.size();i++)
-        if(!target[i])enough[i]=1,cnt++;
+        if(target[i]<=stacked[i]*3)enough[i]=1,cnt++;
     
     while(cnt<target.size()){
         //x번 노드의 정보가 target[x-1]에 있으므로, -1해줘야함.
