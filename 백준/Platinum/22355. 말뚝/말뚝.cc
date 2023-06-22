@@ -4,11 +4,8 @@ typedef long long ll;
 typedef pair<ll,ll> pll;
 const int sz=1<<17;
 pll arr[sz*2],zero;
-
 pll operator+(pll a,pll b){return{a.first+b.first,a.second+b.second};}
-pll operator-(pll a,pll b){return{a.first-b.first,a.second-b.second};}
 void operator+=(pll &a,pll b){a.first+=b.first,a.second+=b.second;}
-pll operator*(pll a,ll b){return{a.first*b,a.second*b};}
 
 void update(int i,pll val){
     i+=sz,arr[i]+=val;
