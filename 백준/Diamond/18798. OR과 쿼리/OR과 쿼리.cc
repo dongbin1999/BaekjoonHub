@@ -19,11 +19,15 @@ void update(int i,int val){
 
 void or_update(int s,int e,ll val,int node,int ns,int ne){
     if(e<ns||ne<s)return;
+    //구간의 and값이 이미 val의 1비트를 모두 갖고있으면, update하는게 의미 없으므로 종료.
     if(s<=ns&&ne<=e&&(_and[node]&val)==val)return;
+    //바닥 끝까지 내려와서 모두 탐색해도, 업데이트는 총 30번까지만 일어나기 때문에 30n의 시간복잡도로 커버 가능.
     if(ns==ne){
         _and[node]|=val;
-        if((_and[node]&~k)&&(_and[node]>>31))update(ns,-1),_and[node]^=1ll<<31;
+        //k가 아니었다가, k가 된 경우. 그 표시로 1<<31을 켜줌.
         if(_and[node]==k)update(ns,1),_and[node]^=1ll<<31;
+        //원래 k였는데, 켜져서는 안되는 어떤 비트가 켜져서 k가 아니게 된 경우. 1<<31표시를 다시 꺼줌.
+        else if((_and[node]&~k)&&(_and[node]>>31))update(ns,-1),_and[node]^=1ll<<31;
         return;
     }
     int mid=(ns+ne)/2;
@@ -33,6 +37,7 @@ void or_update(int s,int e,ll val,int node,int ns,int ne){
 
 int main(){
     int n;scanf("%d%lld",&n,&k);
+    //k=0일때 예외처리.
     if(!k)for(int i=1;i<=n;i++)update(i,1),_and[i+sz]^=1ll<<31;
     for(int i=1;i<=n;i++){
         ll x;scanf("%lld",&x);
