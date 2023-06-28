@@ -27,8 +27,6 @@ void solve(int n,int m,int k){
         }
         sort(d.begin(),d.end(),greater<pii>());
         int add=0;
-        vector<int> mx_reverse(d.size()+1);
-        for(int j=d.size()-1;j>=0;j--)mx_reverse[j]=max(mx_reverse[j+1],d[j].first);
         for(int j=0;j<d.size();j++){
             if(add>d[j].first)break;
             add=min(add+d[j].second,d[j].first+1);
