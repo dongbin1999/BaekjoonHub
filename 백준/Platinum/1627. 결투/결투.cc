@@ -41,7 +41,6 @@ int main(){
         for(auto i:win)printf("%d ",i);
         return 0;
     }
-    else if(!XOR)return !printf("LOSING");
 
     for(auto [start,len]:v){
         XOR^=dp[len];
