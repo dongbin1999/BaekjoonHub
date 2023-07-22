@@ -8,8 +8,8 @@ typedef pair<int,int> pii;
 pii go[8]={{1,0},{1,-1},{0,-1},{-1,-1},{-1,0},{-1,1},{0,1},{1,1}};
 
 bool kill(pii q,pii k1,pii k2){
-    auto [qx,qy]=q;auto [k1x,k1y]=k1;auto [k2x,k2y]=k2;
-    return qx==k1x||qx==k2x||qy==k1y||qy==k2y||abs(qx-k1x)==abs(qy-k1y)||abs(qx-k2x)==abs(qy-k2y);
+    return q.x==k1.x||q.x==k2.x||q.y==k1.y||q.y==k2.y||
+    abs(q.x-k1.x)==abs(q.y-k1.y)||abs(q.x-k2.x)==abs(q.y-k2.y);
 }
 
 int main() {
@@ -50,25 +50,5 @@ int main() {
         }
         if(bk1)return !printf("3");
     }
-
-
-    /*for(auto [qf,v]:ma){
-        for(int d=1;d<=100;d++){
-            for(auto [qdx,qdy]:go){//퀸의 두 번째 움직임
-                pii nq={qf.x+qdx*d,qf.y+qdy*d};
-                if(!in(nq))continue;
-                bool three=1;
-                for(auto [kf1,kf2]:v){//왕의 첫 번째 움직임이 완료된 상태. 첫 퀸의 공격을 피한 왕들임.
-                    for(auto [kdx,kdy]:go){//왕의 두 번째 움직임
-                        pii nk1={kf1.x+kdx,kf1.y+kdy};
-                        if(ok(nk1,nq,kf2)&&!kill(nq,nk1,kf2))three=0;
-                        pii nk2={kf2.x+kdx,kf2.y+kdy};
-                        if(ok(nk2,nq,kf1)&&!kill(nq,kf1,nk2))three=0;
-                    }
-                }
-                if(three)return !printf("3");
-            }
-        }
-    }*/
     return !printf("4");
 }
