@@ -42,12 +42,10 @@ void dfs(int cur,int pre,int node,int dist,bool b){
 
 int ans(int turn){
     int l=road[line[(turn+1)/2]],r=road[line[line.size()-1-turn/2]];
-    //printf("<%d> [%d %d]",turn,l,r);
     if(l>=r)return 1e9;
     int x;
     if(turn%2)x=query(r,r,1)-query(l,r-1,0);
     else x=query(l,l,0)-query(l+1,r,1);
-    //printf("%d %d %d : %d\n",turn,x,turn+1,ans(turn+1));
     return max(x,-ans(turn+1));
 }
 
