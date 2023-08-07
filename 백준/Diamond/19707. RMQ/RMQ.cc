@@ -1,7 +1,6 @@
 #include <bits/stdc++.h>
 using namespace std;
 typedef pair<int,int> pii;
-typedef tuple<int,int,int> tup;
 const int sz=1<<17;
 int arr[sz<<1];
 
@@ -11,7 +10,6 @@ int query(int s,int e,int node,int ns,int ne){
     int mid=(ns+ne)>>1;
     return min(query(s,e,node<<1,ns,mid),query(s,e,node<<1|1,mid+1,ne));
 }int query(int s,int e){return query(s,e,1,0,sz-1);}
-
 
 vector<int> ans,pick;
 bool update(int s,int e,int x,int node,int ns,int ne){
@@ -27,17 +25,13 @@ bool update(int s,int e,int x,int node,int ns,int ne){
     return update(s,e,x,node<<1,ns,mid)|update(s,e,x,node<<1|1,mid+1,ne);
 }bool update(int s,int e,int x){return update(s,e,x,1,0,sz-1);}
 
-
-
 int main(){
     memset(arr,-1,sizeof(arr));
     int n,q;scanf("%d%d",&n,&q);
     ans.assign(n,-1),pick.assign(n,0);
     map<int,vector<int>> ma;
-//    vector<tup> check;
     while(q--){
-        int l,r,x;scanf("%d%d%d",&l,&r,&x);
-//        check.push_back({l,r,x});
+        int l,r,x;scanf("%d%d%d",&l,&r,&x);x*=-1;
         if(ma.find(x)==ma.end())ma[x]={l,r,l,r};
         else{
             vector<int> t=ma[x];
@@ -45,28 +39,13 @@ int main(){
             ma[x]=t;
         }
     }
-    vector<vector<int>> v;
-    for(auto [x,p]:ma){
-        vector<int> t={x};
-        for(auto i:p)t.push_back(i);
-        v.push_back(t);
 
-    }
-    reverse(v.begin(),v.end());
-    for(auto p:v){
-        int x=p[0],nl=p[1],nr=p[2],wl=p[3],wr=p[4];
+    for(auto [mix,p]:ma){
+        int x=-mix,nl=p[0],nr=p[1],wl=p[2],wr=p[3];
         if(!update(nl,nr,x)){while(n--)printf("-1 ");return 0;}
         update(wl,wr,x);
     }
 
-//    printf("ans : ");
-//    for(int i=0;i<n;i++)printf("%d ",ans[i]);
-//    printf("\n");
-//    printf("arr : ");
-//    for(int i=0;i<n;i++)printf("%d ",query(i,i));
-//    printf("\n");
-
-    //min이 큰 순으로 빈칸 pq에 저장하기
     priority_queue<pii> pq;
     for(int i=0;i<n;i++)
         if(ans[i]<0)pq.push({query(i,i),i});
@@ -77,10 +56,6 @@ int main(){
         if(mn>x){while(n--)printf("-1 ");return 0;}
         pick[x]=1,ans[idx]=x;
     }
-
-//    for(auto [l,r,x]:check)
-//        if(query(l,r)!=x){while(n--)printf("-1 ");return 0;}
-
     for(int i=0;i<n;i++)printf("%d ",ans[i]);
     return 0;
 }
