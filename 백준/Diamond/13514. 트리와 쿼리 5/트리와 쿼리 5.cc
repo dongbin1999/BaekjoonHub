@@ -1,10 +1,9 @@
 #include <bits/stdc++.h>
 using namespace std;
 const int sz=100000;
-typedef pair<int,int> pii;
 
 vector<int> tree[sz+1],centroid_tree[sz+1];
-int sub[sz+1],centroid_root,centroid_pa[sz+1];
+int sub[sz+1],centroid_pa[sz+1];
 bool removed[sz+1];
 int get_subsize(int node,int pa=-1){
     sub[node]=1;
@@ -21,11 +20,8 @@ void make_centroid_tree(int node=1,int pre=-1){
     int centroid=get_centroid(node,get_subsize(node));
     removed[centroid]=1;
     centroid_pa[centroid]=pre;
-    if(pre==-1)centroid_root=centroid;
-    else {
-        centroid_tree[pre].push_back(centroid);
-        centroid_tree[centroid].push_back(pre);
-    }
+    centroid_tree[pre].push_back(centroid);
+    centroid_tree[centroid].push_back(pre);
     for(auto nx:tree[centroid])
         if(!removed[nx]) make_centroid_tree(nx,centroid);
 }
@@ -53,21 +49,20 @@ int dist(int a,int b){
 }
 
 bool color[sz+1];
-priority_queue<pii,vector<pii>,greater<pii>> pq[sz+1];
+multiset<int> se[sz+1];
 void change(int node){
     color[node]^=1;
-    if(!color[node]) return;
     int go=node;
     while(go!=-1){
-        pq[go].push({dist(go,node),node});
+        if(color[node])se[go].insert(dist(go,node));
+        else se[go].erase(se[go].find(dist(go,node)));
         go=centroid_pa[go];
     }
 }
 void ans(int node){
     int go=node,ret=1e9;
     while(go!=-1){
-        while(!pq[go].empty()&&!color[pq[go].top().second])pq[go].pop();
-        if(!pq[go].empty())ret=min(ret,dist(go,node)+pq[go].top().first);
+        if(!se[go].empty())ret=min(ret,dist(go,node)+*se[go].begin());
         go=centroid_pa[go];
     }
     printf("%d\n",ret==1e9?-1:ret);
