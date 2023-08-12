@@ -68,7 +68,7 @@ int main(){
     sort(v.begin()+1,v.end());
     vector<pii> lr(comp.size(),{1,k});
     vector<int> ans(n+1,2e9);
-    int cnt=ceil(log2(k))+1;//pbs 횟수
+    int cnt=ceil(log2(k));//pbs 횟수
     while(cnt--){
         memset(arr,0,sizeof(arr));memset(lazy,0,sizeof(lazy));
         vector<tup> p;
