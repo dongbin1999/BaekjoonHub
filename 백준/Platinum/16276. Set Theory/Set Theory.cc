@@ -15,7 +15,6 @@ void solve(){
             if(vv.count(i-b[j])>0){ok=0;break;}
         if(ok)b.push_back(i);
     }
-    if(b.size()<n){printf("NO\n");return;}
     printf("YES\n");
     for(auto i:b)printf("%d ",i);
     printf("\n");
