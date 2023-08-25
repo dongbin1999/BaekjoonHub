@@ -7,19 +7,20 @@ pll go[4]={{1,0},{-1,0},{0,1},{0,-1}};
 
 int main(){
     ll n,m,k,x;scanf("%lld%lld%lld%lld",&n,&m,&k,&x);
-    priority_queue<tup,vector<tup>,greater<tup>> temp;
+    vector<tup> temp;
     vector<ll> vvv(m);
     vector<vector<ll>> vv(n,vvv);
     for(int i=0;i<n;i++)for(int j=0;j<m;j++)
-            scanf("%lld",&vv[i][j]),temp.push({vv[i][j],i,j});
+            scanf("%lld",&vv[i][j]),temp.push_back({vv[i][j],i,j});
+    sort(temp.begin(),temp.end());
     ll l=0,r=x,mid,ans=x;
     while(l<=r){
-        priority_queue<tup,vector<tup>,greater<tup>> pq=temp;
+        vector<tup> p=temp;
         vector<vector<ll>> v=vv;
         mid=(l+r)/2;
         ll correct=0;
-        while(!pq.empty()&&correct<=k){
-            auto[val,cx,cy]=pq.top();pq.pop();
+        for(int i=0;i<n*m&&correct<=k;i++){
+            auto[val,cx,cy]=p[i];
             if(val>=x-mid||val!=v[cx][cy])continue;
             bool ok=1;
             for(auto [dx,dy]:go){
