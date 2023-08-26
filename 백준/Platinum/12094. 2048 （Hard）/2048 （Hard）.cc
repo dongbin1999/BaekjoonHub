@@ -1,7 +1,7 @@
 #include <bits/stdc++.h>
 using namespace std;
 int ans,n;
-void go(int v[20][20],int it){
+void go(int (*v)[20],int it){
     if(!it){
         for(int x=0;x<n;x++)for(int y=0;y<n;y++)ans=max(ans,v[x][y]);
         return;
