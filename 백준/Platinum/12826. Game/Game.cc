@@ -17,10 +17,10 @@ bool f(ll a,ll b){
 
 bool bruteforce(ll a,ll b){
     if(!a||!b)return 0;
-    if(a>b)swap(a,b);
-    if(b%a==0)return 1;
+    if(a<b)swap(a,b);
+    if(a%b==0)return 1;
     ll win=0;
-    int x=a;while(x<=b)win|=!bruteforce(a,b-x),x*=a;
+    int x=b;while(x<=a)win|=!bruteforce(b,a-x),x*=b;
     return win;
 }
 
