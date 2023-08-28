@@ -26,8 +26,7 @@ bool bruteforce(ll a,ll b){
 
 void solve(){
     ll a,b;scanf("%lld%lld",&a,&b);
-    //printf("%d %d\n",f(a,b),bruteforce(a,b));
-    printf(f(a,b)&1?"Mirek\n":"Kamil\n");
+    printf(f(a,b)?"Mirek\n":"Kamil\n");
 }
 
 int main(){
