@@ -1,8 +1,8 @@
 #include <bits/stdc++.h>
 using namespace std;
 typedef long long ll;
-const int ps=3;
-const ll mod[ps]={998244353,1000000007,1000000009},base=4000001;
+const int ps=2;
+const ll mod[ps]={998244353,1000000007},base=2;
 ll power[4000001][ps];
 char a[2020][2020],b[2020][2020];
 ll an[2020][2020][ps],bn[2020][2020][ps];
