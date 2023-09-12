@@ -2,22 +2,20 @@
 using namespace std;
 typedef long long ll;
 const int sz=20;
-
-int dp[1<<sz][sz+1];
+int dp[1<<sz];
 
 void solve(){
     int n;scanf("%d",&n);
     memset(dp,0,sizeof(dp));
+    vector<int> v;;
     while(n--){
         int x;scanf("%d",&x);
-        dp[x][0]++;
+        dp[x]++;v.push_back(x);
     }
-    for(int i=0;i<sz;i++)for(int bit=0;bit<1<<sz;bit++){
-        if(bit>>i&1)dp[bit^(1<<i)][i+1]+=dp[bit][i];
-        dp[bit][i+1]+=dp[bit][i];
-    }
+    for(int i=0;i<sz;i++)for(int bit=0;bit<1<<sz;bit++)
+            if(bit>>i&1)dp[bit]+=dp[bit^(1<<i)];
     ll ans=0;
-    for(int i=0;i<1<<sz;i++)ans+=(ll)dp[i][0]*dp[i][sz];
+    for(auto i:v)ans+=dp[i];
     printf("%lld\n",ans);
 }
 
