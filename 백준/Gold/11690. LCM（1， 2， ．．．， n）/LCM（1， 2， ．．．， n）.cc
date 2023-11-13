@@ -11,12 +11,12 @@ int main(){
         for(int j=i*i;j<=n;j+=i)
             a[j]=1;
     }
-    ll ans=1,mod=(1ll<<32)-1;
+    unsigned ans=1;
     for(int i=2;i<=n;i++){
         if(a[i])continue;
         ll nn=n;
-        while(nn/i)ans=(ans*i)&mod,nn/=i;
+        while(nn/i)ans*=i,nn/=i;
     }
-    printf("%lld",ans);
+    printf("%u",ans);
     return 0;
 }
