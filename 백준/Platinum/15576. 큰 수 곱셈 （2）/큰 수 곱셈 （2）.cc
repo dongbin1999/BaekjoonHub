@@ -2,8 +2,8 @@
 using namespace std;
 #define sz(v) (int)v.size()
 #define all(v) v.begin(),v.end()
-typedef long long ll;
 typedef complex<double> cpx;
+typedef __int128 ll;
 
 void fft(vector<cpx>& a) {
     int n=sz(a),L=31-__builtin_clz(n);
@@ -47,25 +47,25 @@ vector<T> multiply(const vector<T>& a,const vector<T>& b){
 int main(){
     string a,b;cin>>a>>b;
     vector<ll> x,y;
-    ll z=0;
+    ll z=0,base=100000,power=log10(base);
     for(int i=0;i<sz(a);i++){
         z=z*10+(a[i]-'0');
-        if((i+1)%3==sz(a)%3)x.push_back(z),z=0;
+        if((i+1)%power==sz(a)%power)x.push_back(z),z=0;
     }
     for(int i=0;i<sz(b);i++){
         z=z*10+(b[i]-'0');
-        if((i+1)%3==sz(b)%3)y.push_back(z),z=0;
+        if((i+1)%power==sz(b)%power)y.push_back(z),z=0;
     }
     vector<ll> ans=multiply(x,y);
     reverse(all(ans));
-    ans.resize(sz(ans)+100);
-    for(int i=0;i<sz(ans)-1;i++)ans[i+1]+=ans[i]/1000,ans[i]%=1000;
+    ans.resize(sz(ans)+2+ceil(log10(300000)/power));
+    for(int i=0;i<sz(ans)-1;i++)ans[i+1]+=ans[i]/base,ans[i]%=base;
     int idx=sz(ans)-1;
     while(idx>=0&&!ans[idx])idx--;
     if(idx<0) printf("0");
     else{
         printf("%lld",ans[idx]);
-        while(idx--)printf("%03lld",ans[idx]);
+        while(idx--)printf("%0*lld",(int)power,ans[idx]);
     }
     return 0;
 }
