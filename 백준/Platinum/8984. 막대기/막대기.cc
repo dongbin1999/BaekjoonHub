@@ -2,39 +2,39 @@
 using namespace std;
 typedef long long ll;
 typedef pair<ll,ll> pll;
-typedef tuple<ll,ll,bool> tup;
 
-unordered_map<ll,vector<ll>> up,down;
+unordered_map<ll,vector<pll>> up,down;
+vector<pll> v;
 ll l;
 
-map<tup,ll> dp;
+int dp[2][100001];
 
-ll go(ll x,ll y,bool b){
-    if(dp[{x,y,b}])return dp[{x,y,b}];
+ll go(int idx,bool b){
+    if(dp[b][idx]!=-1)return dp[b][idx];
+    auto [x,y]=v[idx];
     ll mx=0;
     if(!b){
-        for(auto ny:up[x])
-            if(y<ny)mx=max(mx,go(x,ny,!b));
+        for(auto [ny,nidx]:up[x])
+            if(y<ny)mx=max(mx,go(nidx,!b));
     }
     else{
-        for(auto nx:down[y])
-            if(x<nx)mx=max(mx,go(nx,y,!b));
+        for(auto [nx,nidx]:down[y])
+            if(x<nx)mx=max(mx,go(nidx,!b));
     }
-    return dp[{x,y,b}]=mx+l+abs(x-y);
+    return dp[b][idx]=mx+l+abs(x-y);
 }
 
 int main(){
+    memset(dp,-1,sizeof(dp));
     int n;scanf("%d%lld",&n,&l);
-    vector<pll> v(n);
-    sort(v.begin(),v.end());
-    for(auto &[x,y]:v){
-        scanf("%lld%lld",&x,&y);
-        up[x].push_back(y);
-        down[y].push_back(x);
+    for(int i=0;i<n;i++){
+        ll x,y;scanf("%lld%lld",&x,&y);
+        v.push_back({x,y});
+        up[x].push_back({y,i});
+        down[y].push_back({x,i});
     }
     ll ans=0;
-    for(auto [x,y]:v)
-        ans=max({ans,go(x,y,0),go(x,y,1)});
+    for(int i=0;i<n;i++)ans=max({ans,go(i,0),go(i,1)});
     printf("%lld",ans);
     return 0;
 }
