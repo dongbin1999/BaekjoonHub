@@ -1,40 +1,27 @@
 #include <bits/stdc++.h>
 using namespace std;
+#define UNIQUE(v) sort(v.begin(),v.end()),v.erase(unique(v.begin(),v.end()),v.end());
+#define idx(v,x) lower_bound(v.begin(),v.end(),x)-v.begin()
 typedef long long ll;
-typedef pair<ll,ll> pll;
+typedef pair<int,int> pii;
 
-unordered_map<ll,vector<pll>> up,down;
-vector<pll> v;
-ll l;
-
-int dp[2][100001];
-
-ll go(int idx,bool b){
-    if(dp[b][idx]!=-1)return dp[b][idx];
-    auto [x,y]=v[idx];
-    ll mx=0;
-    if(!b){
-        for(auto [ny,nidx]:up[x])
-            if(y<ny)mx=max(mx,go(nidx,!b));
-    }
-    else{
-        for(auto [nx,nidx]:down[y])
-            if(x<nx)mx=max(mx,go(nidx,!b));
-    }
-    return dp[b][idx]=mx+l+abs(x-y);
-}
+unordered_map<int,ll> dp[2];
 
 int main(){
-    memset(dp,-1,sizeof(dp));
-    int n;scanf("%d%lld",&n,&l);
+    int n;ll l;scanf("%d%lld",&n,&l);
+    vector<pii> v;
     for(int i=0;i<n;i++){
-        ll x,y;scanf("%lld%lld",&x,&y);
+        int x,y;scanf("%d%d",&x,&y);
         v.push_back({x,y});
-        up[x].push_back({y,i});
-        down[y].push_back({x,i});
     }
+    sort(v.begin(),v.end());
     ll ans=0;
-    for(int i=0;i<n;i++)ans=max({ans,go(i,0),go(i,1)});
+    for(auto [x,y]:v){
+        ll px=dp[0][x],py=dp[1][y];
+        dp[0][x]=max(dp[0][x],py+abs(x-y)+l);
+        dp[1][y]=max(dp[1][y],px+abs(x-y)+l);
+        ans=max({ans,dp[0][x],dp[1][y]});
+    }
     printf("%lld",ans);
     return 0;
 }
