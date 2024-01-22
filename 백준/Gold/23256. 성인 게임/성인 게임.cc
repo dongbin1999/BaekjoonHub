@@ -1,0 +1,2 @@
+#include <bits/stdc++.h>
+typedef long long ll; const ll mod=1000000007; ll dp[2][1000001]; int main() { dp[0][1]=3,dp[1][1]=4; for(int i=2;i<=1000000;i++){ dp[0][i]+=dp[0][i-1]*3+dp[1][i-1]; dp[1][i]+=dp[0][i-1]*4+dp[1][i-1]*2; dp[0][i]%=mod,dp[1][i]%=mod; } int t;scanf("%d",&t); while(t--){ int x;scanf("%d",&x); printf("%lld\n",(dp[0][x]+dp[1][x])%mod); } }
