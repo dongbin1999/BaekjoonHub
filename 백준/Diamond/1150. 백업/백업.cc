@@ -18,19 +18,14 @@ bool merge(int a,int b){
     return true;
 }
 
-void init(int n){
-    memset(u,-1,sizeof(u));
-    for(int i=1;i<n;i++)lr[i]={i,i};
-}
-
 int main() {
+    memset(u,-1,sizeof(u));
     int n,k;scanf("%d%d",&n,&k);
-    init(n);
-    vector<ll> v(n),diff(n+1,-2e18);
+    vector<ll> v(n);
     priority_queue<pll,vector<pll>,greater<pll>> pq;
     for(int i=0;i<n;i++){
         scanf("%lld",&v[i]);
-        if(i)diff[i]=v[i]-v[i-1],pq.push({diff[i],i}),c[i]=diff[i];
+        if(i)c[i]=v[i]-v[i-1],pq.push({c[i],i}),lr[i]={i,i};
     }
     ll ans=0;
     while(!pq.empty()){
@@ -38,7 +33,6 @@ int main() {
         idx=find(idx);
         auto [l,r]=lr[idx];
         if(c[idx]!=cost||l<1||r>=n)continue;
-        //printf("cost:%lld l:%lld r:%lld\n",cost,lr[idx].first,lr[idx].second);
         ans+=cost,k--;if(!k)break;
         merge(idx,l-1),merge(idx,r+1);
         c[idx]-=cost*2;
