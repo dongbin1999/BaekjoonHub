@@ -8,7 +8,7 @@ int main(){
     vector<string> v(n);
     for(int i=0;i<n;i++)cin>>v[i];
     for(int i=100;i>=1;i--){
-        unordered_map<string,vector<int>> ma;
+        map<string,vector<int>> ma;
         pair<int,int> ans={1e9,1e9};
         for(int j=0;j<n;j++){
             if(v[j].size()<i)continue;
