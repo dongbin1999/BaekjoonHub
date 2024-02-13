@@ -1,46 +1,25 @@
 #include<bits/stdc++.h>
 using namespace std;
-typedef array<int,3> tup;
-string turn[6],all="UDFBLR";
-vector<int> cw={6,3,0,7,4,1,8,5,2},ccw={2,5,8,1,4,7,0,3,6};
-array<tup,4> change[6];
-unordered_map<char,int> idx;
-char a[6][9];
-void solve(){
-    for(int i=0;i<9;i++){
-        a[idx['U']][i]='w';a[idx['D']][i]='y';a[idx['F']][i]='r';
-        a[idx['B']][i]='o';a[idx['L']][i]='g';a[idx['R']][i]='b';
-    }
-    int n;scanf("%d",&n);
-    while(n--){
-        char x,y;scanf(" %c %c",&x,&y);
-        char b[6][9]={0};
-        for(int i=0;i<4;i++){
-            int j=(i+(y=='+'?1:3))%4;
-            int s=idx[turn[idx[x]][i]],e=idx[turn[idx[x]][j]];
-            for(int k=0;k<3;k++)
-                b[e][change[idx[x]][j][k]]=a[s][change[idx[x]][i][k]];
-        }
-        for(int j=0;j<9;j++)b[idx[x]][j]=a[idx[x]][(y=='+'?idx[x]%2?ccw:cw:idx[x]%2?cw:ccw)[j]];
-        for(int i=0;i<6;i++)for(int j=0;j<9;j++)if(b[i][j])a[i][j]=b[i][j];
-    }
-    for(int i=0;i<9;i++){
-        printf("%c",a[idx['U']][i]);
-        if(i%3==2)printf("\n");
-    }
-}
+#define i()x=='D'||x=='B'||x=='R'
+string c[91],t[91],cw="630741852",ccw="258147036";int T,n,i,s,e,k;char a[91][9],x,y;
 int main(){
-    for(int i=0;i<6;i++)idx[all[i]]=i;
-    turn[idx['U']]="FLBR";turn[idx['D']]="FRBL";
-    turn[idx['F']]="URDL";turn[idx['B']]="ULDR";
-    turn[idx['L']]="UFDB";turn[idx['R']]="UBDF";
-    //U,B,L 우선.
-    change[idx['U']]={tup{0,1,2},tup{0,1,2},tup{2,1,0},tup{2,1,0}};
-    change[idx['D']]={tup{6,7,8},tup{8,7,6},tup{8,7,6},tup{6,7,8}};
-    change[idx['F']]={tup{6,7,8},tup{2,5,8},tup{8,7,6},tup{8,5,2}};
-    change[idx['B']]={tup{0,1,2},tup{6,3,0},tup{2,1,0},tup{0,3,6}};
-    change[idx['L']]={tup{0,3,6},tup{0,3,6},tup{6,3,0},tup{6,3,0}};
-    change[idx['R']]={tup{2,5,8},tup{8,5,2},tup{8,5,2},tup{2,5,8}};
-    int t;scanf("%d",&t);
-    while(t--)solve();
+    t['U']="FLBR",t['D']="FRBL",t['F']="URDL",t['B']="ULDR",t['L']="UFDB",t['R']="UBDF";
+    c['U']="012012210210",c['D']="678876876678",c['F']="678258876852",c['B']="012630210036",c['L']="036036630630",c['R']="258852852258";
+    for(cin>>T;T--;){
+        for(i=9;i--;)a['U'][i]='w',a['D'][i]='y',a['F'][i]='r',a['B'][i]='o',a['L'][i]='g',a['R'][i]='b';
+        for(cin>>n;n--;){
+            cin>>x>>y;
+            vector<array<int,3>> v;
+            for(s=4;s--;){
+                e=(s+(y=='+'?1:3))%4;
+                for(k=3;k--;)v.push_back({t[x][e],c[x][e*3+k]-'0',a[t[x][s]][c[x][s*3+k]-'0']});
+            }
+            for(s=9;s--;)v.push_back({x,s,a[x][(y=='+'?i()?ccw:cw:i()?cw:ccw)[s]-'0']});
+            for(auto[p,q,r]:v)a[p][q]=r;
+        }
+        for(i=0;i<9;i++){
+            cout<<a['U'][i];
+            if(i%3==2)cout<<'\n';
+        }
+    }
 }
