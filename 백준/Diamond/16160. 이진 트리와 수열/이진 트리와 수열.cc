@@ -30,7 +30,7 @@ int main(){
     while(l<=r){
         mid=(l+r)/2;
         ll len=1ll<<(rr-mid),cnt=1ll<<(mid-1);
-        map<ll,ll> ma;
+        unordered_map<ll,ll> ma;
         for(int i=0;i<n;i++){
             ll s=len%n*i%n;
             ll hash=getHash(s,s+min(n,len)-1,n+n);
