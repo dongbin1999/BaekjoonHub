@@ -10,7 +10,7 @@ int main(){
         int a,b;scanf("%d%d",&a,&b);
         cut[a].insert(b),cut[b].insert(a);
     }
-    set<int> todo;
+    unordered_set<int> todo;
     for(int i=2;i<=n;i++)todo.insert(i);
     memset(d,0x3f,sizeof(d));
     d[1]=0;
