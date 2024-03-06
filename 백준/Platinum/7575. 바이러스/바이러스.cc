@@ -1,7 +1,7 @@
 #include <bits/stdc++.h>
 using namespace std;
 typedef long long ll;
-const int base=10001;
+const int base=10000;
 const ll mod[2]={1000000007,1000000009};
 ll power[2][1001],psum[2][1001];
 
