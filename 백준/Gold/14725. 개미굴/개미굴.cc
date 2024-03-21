@@ -1,7 +1,6 @@
 #include<bits/stdc++.h>
 using namespace std;
 
-//왜 unordered_map은 정의부터 안되지?
 struct node{map<string,node> child;}root;
 void insert(vector<string> &v,node &now=root,int i=0){
     if(!now.child.count(v[i]))now.child[v[i]]=node();
@@ -22,7 +21,7 @@ int main(){
         int n;cin>>n;
         vector<string> v(n);
         for(auto &s:v)cin>>s;
-        string now="",nx;
+        string now,nx;
         insert(v);
     }
     go();
