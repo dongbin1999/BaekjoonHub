@@ -18,7 +18,6 @@ void insert(int i=0,int node=0){
         if(a==s[i]){nx=b;break;}
     if(nx==-1){
         trie[node].ma.push_back({s[i],++numbering});
-        trie[node].ma.shrink_to_fit();
         nx=numbering;
     }
     insert(i+1,nx);
