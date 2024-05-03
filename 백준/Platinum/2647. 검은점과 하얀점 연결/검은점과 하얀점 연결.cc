@@ -31,7 +31,7 @@ int main(){
             for(int m=l+1;m+1<=r-1;m+=2){
                 auto [lc,lr]=dp[l][m][h];
                 auto [rc,rr]=dp[m+1][r][h];
-                for(int H=h;H<=mx;H++)dp[l][r][H]=min(dp[l][r][H],{lc+rc,m});
+                dp[l][r][h]=min(dp[l][r][h],{lc+rc,m});
             }
         }
         if(a[l]==a[r])continue;
