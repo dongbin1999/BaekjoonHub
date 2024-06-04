@@ -36,7 +36,6 @@ vector<string> solution(int n, vector<vector<int>> queries) {
             //쿼리 순서가 [l~r]인 원소들을 새로운 집합에 옮긴다.
             ++new_setnum;
             int l=qnum[x],r=qnum[y];
-            assert(sx==sy);
             auto it=v[sx].lower_bound(l);
             while(it!=v[sx].end()&&it->first<=r){
                 int a=it->first,b=it->second;
