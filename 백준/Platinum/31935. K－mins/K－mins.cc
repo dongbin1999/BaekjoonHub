@@ -30,12 +30,12 @@ int main(){
         if(!b[idx+1])merge(idx,idx+1);
         auto [l,r]=lr[find(idx)];
         vector<ll> L={idx+1,l},R={idx-1,r};
-        while(L.size()<=k+3){
+        while(L.size()<=k+2){
             l=find(lr[l].first-1);if(l<1)break;
             if(!b[l])L.back()=lr[l].first;
             else L.push_back(lr[l].first);
         }
-        while(R.size()<=k+3){
+        while(R.size()<=k+2){
             r=find(lr[r].second+1);if(r>n)break;
             if(!b[r])R.back()=lr[r].second;
             else R.push_back(lr[r].second);
