@@ -1,145 +1,38 @@
-#include <iostream>
-#include <vector>
-#include <unordered_map>
-#include <utility>
-#include <cmath>
-#include <algorithm>
+#include<bits/stdc++.h>
 using namespace std;
+const int mod=998244353;
 
-struct TreeNode {
-    int val;
-    TreeNode* left;
-    TreeNode* right;
-    TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
-};
+int pre[500002],post[500002],postidx[500002];
+int n,preidx=1;
+vector<int> tree[500002];
 
-unordered_map<int, int> postorderIndex;
-int preIndex = 0;
-vector<pair<int, int>> edges;
-int singleChildNodes = 0;
-const int MOD = 998244353;
-
-TreeNode* constructTree(vector<int>& preorder, vector<int>& postorder, int left, int right) {
-    if (left > right) return nullptr;
-
-    TreeNode* root = new TreeNode(preorder[preIndex++]);
-
-    if (left == right || preIndex >= preorder.size()) return root;
-
-    int postIndex = postorderIndex[preorder[preIndex]];
-
-    if (postIndex <= right) {
-        root->left = constructTree(preorder, postorder, left, postIndex);
-        root->right = constructTree(preorder, postorder, postIndex + 1, right - 1);
-    }
-
-    if (root->left) {
-        if (root->left->val < 1 || root->left->val > preorder.size()) {
-            cout << 0 << endl;
-            exit(0);
-        }
-        edges.push_back({root->val, root->left->val});
-    }
-    if (root->right) {
-        if (root->right->val < 1 || root->right->val > preorder.size()) {
-            cout << 0 << endl;
-            exit(0);
-        }
-        edges.push_back({root->val, root->right->val});
-    }
-
-    if ((root->left && !root->right) || (!root->left && root->right)) {
-        singleChildNodes++;
-    }
-
-    return root;
+void go(int pa=-1,int l=1,int r=n){
+    if(l>r||preidx>n)return;
+    int node=pre[preidx],mid=postidx[pre[++preidx]];
+    if(mid<=r)go(node,l,mid),go(node,mid+1,r-1);
+    if(pa!=-1)tree[pa].push_back(node);
 }
 
-bool validateInput(int n, vector<int>& preorder, vector<int>& postorder) {
-    if (preorder.size() != n || postorder.size() != n) return false;
-    vector<bool> seen(n + 1, false);
-    for (int num : preorder) {
-        if (num < 1 || num > n || seen[num]) return false;
-        seen[num] = true;
-    }
-    fill(seen.begin(), seen.end(), false);
-    for (int num : postorder) {
-        if (num < 1 || num > n || seen[num]) return false;
-        seen[num] = true;
-    }
-    return true;
+vector<int> pre2(1),post2(1);
+void preorder(int node){
+    pre2.push_back(node);
+    for(auto nx:tree[node])preorder(nx);
 }
 
-void createTreeFromEdges(TreeNode*& root, unordered_map<int, TreeNode*>& nodeMap, int rootVal) {
-    for (const auto& edge : edges) {
-        int parent = edge.first;
-        int child = edge.second;
-        if (!nodeMap[parent]) {
-            nodeMap[parent] = new TreeNode(parent);
-        }
-        if (!nodeMap[child]) {
-            nodeMap[child] = new TreeNode(child);
-        }
-        if (!nodeMap[parent]->left) {
-            nodeMap[parent]->left = nodeMap[child];
-        } else {
-            nodeMap[parent]->right = nodeMap[child];
-        }
-    }
-    root = nodeMap[rootVal]; // root is preorder[0]
+void postorder(int node){
+    for(auto nx:tree[node])postorder(nx);
+    post2.push_back(node);
 }
 
-void getPreorder(TreeNode* node, vector<int>& result) {
-    if (!node) return;
-    result.push_back(node->val);
-    getPreorder(node->left, result);
-    getPreorder(node->right, result);
-}
-
-void getPostorder(TreeNode* node, vector<int>& result) {
-    if (!node) return;
-    getPostorder(node->left, result);
-    getPostorder(node->right, result);
-    result.push_back(node->val);
-}
-
-int main() {
-    int n;
-    cin >> n;
-    if(n==1)return !printf("1");
-    vector<int> preorder(n), postorder(n);
-    for (int i = 0; i < n; ++i) cin >> preorder[i];
-    for (int i = 0; i < n; ++i) cin >> postorder[i];
-
-    if (!validateInput(n, preorder, postorder)) {
-        cout << 0 << endl;
-        return 0;
-    }
-
-    for (int i = 0; i < postorder.size(); ++i) {
-        postorderIndex[postorder[i]] = i;
-    }
-
-    TreeNode* root = constructTree(preorder, postorder, 0, postorder.size() - 1);
-
-    unordered_map<int, TreeNode*> nodeMap;
-    createTreeFromEdges(root, nodeMap, preorder[0]);
-
-    vector<int> newPreorder, newPostorder;
-    getPreorder(root, newPreorder);
-    getPostorder(root, newPostorder);
-
-    if (preorder != newPreorder || postorder != newPostorder) {
-        cout << 0 << endl;
-        return 0;
-    }
-
-    long long result = 1;
-    for (int i = 0; i < singleChildNodes; ++i) {
-        result = (result * 2) % MOD;
-    }
-
-    cout << result << endl;
-
-    return 0;
+int main(){
+    scanf("%d",&n);
+    for(int i=1;i<=n;i++)scanf("%d",&pre[i]);
+    for(int i=1;i<=n;i++)scanf("%d",&post[i]),postidx[post[i]]=i;
+    go();
+    int root=pre[1];
+    preorder(root),postorder(root);
+    for(int i=1;i<=n;i++)if(pre[i]!=pre2[i]||post[i]!=post2[i])return !printf("0");
+    int ans=1;
+    for(int i=1;i<=n;i++)if(tree[i].size()==1)ans=ans*2%mod;
+    printf("%d",ans);
 }
