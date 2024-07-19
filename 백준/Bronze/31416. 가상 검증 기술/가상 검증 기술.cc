@@ -2,15 +2,11 @@
 using namespace std;
 void solve(){
     int a,b,c,d;scanf("%d%d%d%d",&a,&b,&c,&d);
-    int l=1,r=1e4,mid,ans=r;
-    while(l<=r){
-        int mid=(l+r)/2;
-        bool ok=mid>=b*d;
-        int cnt=0,dohoon=mid-b*d;
-        cnt+=dohoon/a+mid/a;
-        ok&=cnt>=c;
-        if(ok)ans=min(ans,mid),r=mid-1;
-        else l=mid+1;
+    int ans=1e9;
+    for(int da=0;da<=c;da++){
+        int sa=c-da;
+        int ds=da*a+b*d,ss=sa*a;
+        ans=min(ans,max(ds,ss));
     }
     printf("%d\n",ans);
 }
