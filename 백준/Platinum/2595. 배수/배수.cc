@@ -14,14 +14,14 @@ bool operator<(pis a,pis b){
 
 string b[2][30000];
 pis f(vector<int> v){
-    for(int i=0;i<n;i++)b[0][i]=b[1][i]="";
+    for(int i=0;i<n;i++)b[0][i].clear(),b[1][i].clear();
     queue<pis> q;
     for(auto i:v){
         if(!i)continue;
         string s=to_string(i);
         int x=over(s),y=i%n;
         if(b[x][y]!="")continue;
-        q.push({y,s}),b[x][y]=1;
+        q.push({y,to_string(i)}),b[x][y]=1;
     }
     while(!q.empty()){
         auto [r,s]=q.front();q.pop();
