@@ -11,7 +11,7 @@ int go(int l,int r,int o){
         if(i>l)ok&=v[i]>v[i-1];
         if(i<r)ok&=v[i]>v[i+1];
         if(!ok)continue;
-        if(one==i)ret=1;
+        if(one==i)return dp[o&1][l][r]=1;
         else if(one<i)ret|=!go(l,i-1,o+r-i);
         else ret|=!go(i+1,r,o+i-l);
     }
