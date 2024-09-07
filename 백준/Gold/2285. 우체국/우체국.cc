@@ -1,17 +1,16 @@
-#include<bits/stdc++.h>
+#include <bits/stdc++.h>
 using namespace std;
 typedef long long ll;
 typedef pair<ll,ll> pll;
 
-int main(){
-    int n;scanf("%d",&n);
-    vector<pll> v(n);
-    ll sum=0,cnt=0;
-    for(int i=0;i<n;i++)scanf("%lld%lld",&v[i].first,&v[i].second),sum+=v[i].second;
-    sort(v.begin(),v.end(),greater<pll>());
-    for(auto [a,b]:v){
-        cnt+=b;
-        if(cnt+cnt>=sum)return !printf("%lld",a);
+pll a[100001];
+
+int main() {
+    ll b=0,n;scanf("%lld",&n);
+    for(int i=1;i<=n;i++)scanf("%lld %lld",&a[i].first,&a[i].second),b+=a[i].second;
+    sort(a+1,a+1+n);
+    for(int i=1;i<=n;i++){
+        b-=a[i].second*2;
+        if(b<=0)return !printf("%lld",a[i].first);
     }
-    return 0;
 }
