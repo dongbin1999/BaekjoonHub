@@ -1,16 +1,17 @@
 #include <bits/stdc++.h>
 using namespace std;
 typedef long long ll;
-typedef array<ll,3> arr;
-vector<arr> graph[200001];
-int vis[200001],evis[200001];
+typedef pair<int,ll> pii;
+vector<pii> graph[200001];
+int vis[200001];
 vector<ll> v;
-void go(int cur){
-    vis[cur]=1;
-    for(auto [nx,cost,e]:graph[cur]){
-        if(evis[e])continue;
-        v.push_back(cost),evis[e]=1,go(nx);
-        return;
+void go(int cur,int pre=-1){
+    if(vis[cur])return;vis[cur]=1;
+    auto [nx,cost]=graph[cur][0];
+    if(nx!=pre)v.push_back(cost),go(nx,cur);
+    else{
+        nx=graph[cur][1].first,cost=graph[cur][1].second;
+        v.push_back(cost),go(nx,cur);
     }
 }
 
@@ -18,13 +19,15 @@ int main(){
     int n;scanf("%d",&n);
     for(int i=1;i<=n;i++){
         int a,b;ll p;scanf("%d%d%lld",&a,&b,&p);
-        graph[a].push_back({b,p,i});
-        graph[b].push_back({a,p,i});
+        graph[a].push_back({b,p});
+        graph[b].push_back({a,p});
     }
-    ll ans=0;
+    for(int i=1;i<=n;i++)sort(graph[i].begin(),graph[i].end());
+    ll ans=0,cnt=0;
     for(int i=1;i<=n;i++){
         if(vis[i])continue;
         v.clear(),go(i);
+        cnt+=v.size();
         int m=v.size();
         if(m==1){ans+=v[0];continue;}
         vector<vector<ll>> dp(2,vector<ll>(m,1e10));
