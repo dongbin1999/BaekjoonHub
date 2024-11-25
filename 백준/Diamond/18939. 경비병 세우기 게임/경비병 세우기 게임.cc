@@ -1,19 +1,2 @@
-#include <iostream>
-using namespace std;
-int main()
-{
-    ios_base::sync_with_stdio(false);
-    cin.tie(NULL);
-    cout.tie(NULL);
-    int tc;
-    cin>>tc;
-    for(int ti=0; ti<tc; ti++){
-        bool first_win=false;
-        int n,m,k;
-        cin>>n>>m>>k;
-        if(m<=2*k-1) first_win=true;
-        else if(n%2==1 && m%2==1) first_win=true;
-        cout<<(first_win? "Yuto":"Platina");
-        cout<<"\n";
-    }
-}
+#include<cstdio>
+int main(){int t;scanf("%d",&t);while(t--){int n,m,k;scanf("%d%d%d",&n,&m,&k);printf(m<k+k||n*m&1?"Yuto\n":"Platina\n");}}
