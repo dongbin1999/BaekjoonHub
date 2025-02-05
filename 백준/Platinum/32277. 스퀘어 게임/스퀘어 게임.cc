@@ -43,16 +43,14 @@ void solve(){
         while(R<r)for(int x=a[r--];x>=2&&x<=n&&cnt[x]--%x==0;x=x*x)ans--;
         answer[idx[i]]=ans;
     }
-    for(int i=0;i<q;i++)cout<<answer[i]<<'\n';
+    for(int i=0;i<q;i++)printf("%d\n",answer[i]);
 }
 
 int main(){
-    cout.tie(0);
     cin.tie(0)->sync_with_stdio(0);
-    setbuf(stdout, NULL);
     int tc;cin>>tc;
     for(int i=1;i<=tc;i++){
-        cout<<"Case #"<<i<<"\n";
+        printf("Case #%d\n",i);
         solve();
     }
     return 0;
