@@ -47,6 +47,7 @@ void solve(){
 }
 
 int main(){
+    cout.tie(0);
     cin.tie(0)->sync_with_stdio(0);
     setbuf(stdout, NULL);
     int tc;cin>>tc;
