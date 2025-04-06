@@ -1,14 +1,11 @@
 import decimal
 
 def main():
-    decimal.getcontext().prec = 2000
+    decimal.getcontext().prec = 1000
     n, k, x = map(int, input().split())
 
     if n < 2:
         print(0)
-        return
-    if n < 12:
-        print(1)
         return
 
     log_value = decimal.Decimal("1.25").log10()
@@ -22,7 +19,7 @@ def main():
         add += 1
         n -= 2
     
-    if 2 <= x <= 3:
+    if 1 <= x <= 3:
     	n -= 1
 
     print(int(n * log_value) + add)
