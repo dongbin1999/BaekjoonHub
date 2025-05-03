@@ -5,8 +5,7 @@ int main(){
     int n;scanf("%d",&n);
     vector<int> v(n+2);
     string ans;
-    int sum=0;
-    for(int i=0;i<n;i++)scanf("%d",&v[i+1]),sum+=v[i+1];
+    for(int i=0;i<n;i++)scanf("%d",&v[i+1]);
     int d=1,cur=1;
     while(1){
         if(d==1){
@@ -20,6 +19,5 @@ int main(){
         }
     }
     while(v[1])v[1]-=2,ans+="RL";
-    assert(ans.size()==sum);
     for(auto c:ans)printf("%c",c);
 }
